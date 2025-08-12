@@ -45,3 +45,87 @@ int main() {
     return 0;
 }
 */
+
+/* 10869
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << a + b << endl;
+    cout << a - b << endl;
+    cout << a * b << endl;
+    cout << a / b << endl;
+    cout << a % b << endl;
+    return 0;
+}
+*/
+
+/* 10926
+int main() {
+    string id;
+    cin >> id;
+    cout << id << "??!" << endl;
+    return 0;
+}
+*/
+
+/* 18108 
+int main() {
+    int year;
+    cin >> year;
+    cout << year - 543 << endl;
+    return 0;
+}
+*/
+/*10430
+int main() {
+    int a, b, c;
+    cin >> a >> b >> c;
+    cout << (a + b) % c << endl;
+    cout << ((a % c) + (b % c)) % c << endl;
+    cout << (a * b) % c << endl;
+    cout << ((a % c) * (b % c)) % c << endl;
+    return 0;      
+}
+*/
+
+/* 2588
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << a * (b % 10) << endl;
+    cout << a * ((b / 10) % 10) << endl;
+    cout << a * (b / 100) << endl;
+    cout << a * b << endl;
+    return 0;
+}
+*/
+
+/* 11382
+int main() {
+    long long a, b, c;
+    cin >> a >> b >> c;
+    cout << a + b + c << endl;
+    return 0;
+}
+*/
+
+/* 10171
+int main() {
+    cout << "\\    /\\\n";
+    cout << " )  ( ')\n";
+    cout << "(  /  )\n";
+    cout << " \\(__)|\n";
+    return 0;
+}
+*/
+
+/*10172
+int main() {
+    cout << "|\\_/|\n";
+    cout << "|q p|   /}\n";
+    cout << "( 0 )\"\"\"\\\n";
+    cout << "|\"^\"`    |\n";
+    cout << "||_/=\\\\__|\n";
+    return 0;
+}
+*/
