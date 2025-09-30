@@ -1,8 +1,9 @@
 #include <iostream>
-
+#include <string>
 using namespace std;
 
 int main() {
-    int a[100] = {0};
+    cout << char(1 + '0');
 
+    return 0;
 }
