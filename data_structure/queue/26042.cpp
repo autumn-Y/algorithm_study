@@ -20,8 +20,7 @@ int main() {
             q.push(s_num);
 
             if(q.size() > max_size) {
-                max_size = q.size();\
-                
+                max_size = q.size();
                 min_snum = s_num;
             }
 
