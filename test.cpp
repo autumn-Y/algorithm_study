@@ -1,21 +1,10 @@
 #include <iostream>
-#include <string>
-#include <stack>
+#include <list>
 using namespace std;
 
 int main() {
-    string s;
-    s = "test is boring";
-    stack<char> st;
+    list<int> l = {1, 2, 3, 4};
+    list<int>:: iterator it;
 
-    for(int i = 0; i < s.length(); i++) {
-        st.push(s[i]);
-    }
-
-    for(int i = 0; i < st.size(); i++) {
-        cout << st.top();
-        st.pop();
-    }
-
-    return 0;
+    
 }
