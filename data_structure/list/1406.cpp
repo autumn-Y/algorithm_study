@@ -57,7 +57,7 @@ int main() {
     for(auto x : lst_b) cout << x;
 }
 
-/* First try
+/* First try - time error
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
