@@ -1,73 +1,95 @@
-// https://www.acmicpc.net/problem/2468
-
 #include <iostream>
-#include <vector>
 #include <queue>
 #include <cstring>
 #include <algorithm>
 using namespace std;
 
-// 광역 2차원 배열
-int arr[100][100];
+// 광역변수 : 2차원 배열, visitied, cnt
+int area[100][100];
 bool visited[100][100] = {false};
 int cnt, N;
 
-// 상하좌우
-int dx[4] = {-1, 1, 0, 0};
-int dy[4] = {0, 0, -1, 1};
+// 상하좌우 영역 탐색
+int dx[4] = { -1, 1, 0, 0 };
+int dy[4] = { 0, 0, -1, 1 };
+
+void bfs(int x, int y, int h) {
+	// bfs 시작 지점에서 물에 잠기지 않은 영역 찾기
+	int bx, by, ax, ay;
+	queue<pair<int, int>> q;
+
+	q.push(make_pair(x, y));
+
+	while (!q.empty()) {
+		bx = q.front().first;
+		by = q.front().second;
+		q.pop();
+
+		// for문 돌면서 상하좌우 확인
+		for (int i = 0; i < 4; i++) {
+			// 이동 후 좌표 계산
+			ax = bx + dx[i];
+			ay = by + dy[i];
+
+			// 영역 밖이면 넘어가기
+			if (ax < 0 || ax >= N || ay < 0 || ay >= N) continue;
+
+			if (visited[ax][ay]) continue;
+			visited[ax][ay] = true;
+
+			if (area[ax][ay] <= h) continue;
+			q.push(make_pair(ax, ay));
+		}
+	}
+}
 
 void search(int height) {
-    // 안전한 영역 = 상하좌우가 다 붙어있는 것, 1칸도 1개의 영역
-    // 현재 height랑 비교해서 잠기는지 여부 판단
-    // 잠기면 visited true
-    // 안잠기면 bfs 실행
+	// 인수로 들어온 height만큼 잠길 때 영역 탐색
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			if (visited[i][j]) continue;
 
-    // 전체를 돌아야해
-    for(int i = 0; i < N; i++) {
-        for(int j = 0; j < N; j++) {
-            if(visited[i][j]) continue;
-            bfs(i, j, height);
-            cnt++;
-        }
-    }
+			// 방문 처리하고
+			visited[i][j] = true;
+
+			if (area[i][j] <= height) continue;
+			
+			// 비의 양보다 높을 때에만 탐색하기
+			bfs(i, j, height);
+			cnt++;
+		}
+	}
 }
 
-void bfs(int x, int y, int height) {
-    // x, y 좌표를 모두 저장하는 큐
-    queue<pair<int, int>> q;
-    
-    ///
-}
+
 
 int main() {
-    // input : 2차원 배열의 행과 열 개수 N (2이상 100이하)
-    // 영역의 높이 정보 입력
-    cin >> N;
+	// input: 2차원 배열 N
+	cin >> N;
+	int ans = -1;
 
-    // 입력을 받으면서 최대 높이를 알아야해
-    // 높이 1부터 최대 높이까지 안전한 영역의 개수를 구해야함
-    int hmax = -1;
-    for(int i = 0; i < N; i++) {
-        for(int j = 0; j < N; j++) {
-            cin >> arr[i][j];
-            if(arr[i][j] > hmax) hmax = arr[i][j];
-        }
-    }
+	// 가장 높은 높이 정보를 알아야함
+	// bfs를 1부터 hamx까지 돌면서 안전한 영역이 최대인 경우를 찾아야 함
+	int hmax = -1;
 
-    // output : 장마철에 물에 잠기지 않는 안전한 영역의 최대 개수
-    
-    // main에서는 높이따라 탐색하기만 할게요
-    int result = 0;
-    for(int i = 1; i <= hmax; i++) {
-        cnt = 0;
-        search(i);
-        if(result < cnt) result = cnt;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			cin >> area[i][j];
+			if (area[i][j] > hmax) hmax = area[i][j];
+		}
+	}
 
-        // visited 초기화
-        for(int j = 0; j < N; j++) {
-            memset(visited[j], false, N);
-        }
-    }
+	// output : 물에 잠기지 않는 안전한 영역의 최대 개수
+	for (int h = 0; h <= hmax; h++) {
+		// cnt, visited 초기화
+		cnt = 0;
+		for (int i = 0; i < N; i++) {
+			memset(visited[i], false, 100);
+		}
 
-    cout << result;
+		search(h);
+		if (cnt > ans) ans = cnt;
+	}	
+
+	cout << ans;
 }
