@@ -1,7 +1,9 @@
 // https://www.acmicpc.net/problem/10974
+// 완전탐색연습 1
 
 #include <iostream>
 #include <cstring>
+#include <stdio.h>
 using namespace std;
 
 int N;
@@ -12,9 +14,9 @@ bool visited[9] = {false};
 void permute(int now) {
     if(now == N) {
         for(int j = 0; j < N; j++) {
-            cout << ans[j] << " ";
+            printf("%d ", ans[j]);
         }
-        cout << endl;
+        printf("\n");
         return;
     }
 
