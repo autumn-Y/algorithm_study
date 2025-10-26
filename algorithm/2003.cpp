@@ -25,13 +25,17 @@ int main() {
         if (sum >= M) {
             if (sum == M) ans++;
             sum -= arr[start++];
-        } else if (end == N) {
+        } 
+        
+        else if (end == N) {
             break;
-        } else {
+        } 
+        
+        else {
             sum += arr[end++];
         }
     }
 
     // output: 합이 M이 되는 경우의 수 출력
     cout << ans;
-}
+} 
