@@ -1,71 +1,35 @@
 #include <iostream>
-#include <queue>
-#include <utility>
-#include <vector>
-#include <functional>
-#include <list>
-#include <map>
-#include <set>
-#include <algorithm>
+#include <stdio.h>
 using namespace std;
 
+int N, M;
+int arr[9];
+bool visited[9] = {false};
+
+void dfs(int idx, int cnt) {
+    // 종료 조건 : cnt == M
+    if(cnt == M) {
+        for(int i = 0; i < M; i++) {
+            printf("%d ", arr[i]);
+        }
+        printf("\n");
+        return;
+    }
+
+    // 아니면 1부터 재귀 돌때마다 확인 해줘야함
+    for(int i = idx; i <= N; i++) {
+        //if(visited[i]) continue;
+        //visited[i] = true;
+        arr[cnt] = i;
+        dfs(i, cnt + 1);
+        //visited[i] = false;
+    }
+    return;
+}
+
 int main() {
-    vector<int> v = {5, 2, 9, 1, 7};
+    cin >> N >> M;
 
-    // 1. push_back
-    v.push_back(10);
-
-    // 2. pop_back
-    v.pop_back();
-
-    // 3. size
-    cout << v.size() << endl;
-
-    // 4. empty
-    cout << "is empty? " << (v.empty() ? "yes" : "no") << endl;
-
-    // 5. front
-    cout << "front: " << v.front() << endl;
-
-    // 6. back
-    cout << "back: " << v.back() << endl;
-
-    // 7. at : 인덱스로 접근 (범위 체크)
-    cout << "element at index 2: " << v.at(2) << endl;
-
-    // 8. operator[] : 인덱스로 접근 (범위 체크 없음)
-    cout << "element at index 3: " << v[3] << endl;
-
-    // 9. insert
-    v.insert(v.begin() + 2, 99);
-
-    // 10. erase
-    v.erase(v.begin() + 1);
-
-    // 11. sort
-    sort(v.begin(), v.end());
-
-    // 12. reverse
-    reverse(v.begin(), v.end());
-
-    // 13. find : 특정 값 찾기
-    auto it = find(v.begin(), v.end(), 99);
-    if(it != v.end()) {
-        cout << "found 99 at index: " << distance(v.begin(), it) << endl;
-    }
-
-    // 14. emplace_back
-    v.emplace_back(42);
-
-    // 15. print all
-    cout << "vector contents: ";
-    for(int x : v) {
-        cout << x << " ";
-    }
-    cout << endl;
-
-    // 16. clear
-    v.clear();
-
-    return 0;
+    // 중복 허용 안함, 사전 순으로 증가
+    dfs(1, 0);
 }
