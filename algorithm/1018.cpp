@@ -7,6 +7,54 @@
 #include <cmath>
 using namespace std;
 
+string w_start[8] = {
+    "WBWBWBWB",
+    "BWBWBWBW",
+    "WBWBWBWB",
+    "BWBWBWBW",
+    "WBWBWBWB",
+    "BWBWBWBW",
+    "WBWBWBWB",
+    "BWBWBWBW"
+};
+
+string b_start[8] = {
+    "BWBWBWBW",
+    "WBWBWBWB",
+    "BWBWBWBW",
+    "WBWBWBWB",
+    "BWBWBWBW",
+    "WBWBWBWB",
+    "BWBWBWBW",
+    "WBWBWBWB"
+};
+
+string board[51];
+
+int w_cnt(int x, int y) {
+    int cnt = 0;
+
+    for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+            if(board[x + i][y + j] != w_start[i][j]) cnt++;
+        }
+    }
+
+    return cnt;
+}
+
+int b_cnt(int x, int y) {
+    int cnt = 0;
+
+    for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+            if(board[x + i][y + j] != b_start[i][j]) cnt++;
+        }
+    }
+
+    return cnt;
+}
+
 int main() {
     // input: n, m (8 ~ 50)
     // 보드의 각 행의 상태 B or W
@@ -15,48 +63,26 @@ int main() {
     // 검은색과 흰색이 번갈아서 칠해져 있어야 함
     // 변을 공유하는 두개의 사각형은 다른 색으로 칠해져 있어야함
     
-    int n, m;
+    // !! 보드판을 체스판처럼 8 x 8로 잘라낸 후에
+    // 다시 칠해야하는 부분 구하기
+
+    // 그냥 냅다 걍 비교때리면 되는 문제임
+
+    int n, m, temp;
     string str;
+    int ans = 10000000;
 
-    scanf("%d %d", &n, &m);
-    int chess[51][51];
-    int temp;
-    // 귀찮으니까 B = -1, W = 1
-
-    int cnt = 0;
-    
+    cin >> n >> m;
     for(int i = 0; i < n; i++) {
-        cin >> str;
-        //temp = 0;
-        for(int j = 0; j < m; j++) {
-            if(str[j] == 'B') chess[i][j] = -1;
-            else chess[i][j] = 1;
-
-           //temp += chess[i][j];
-        }
-        //cnt += abs(temp);
+        cin >> board[i];
     }
 
-    int start, last;
-    start = -chess[0][0];
-
-    for(int i = 0; i < n; i++) {
-        last = start;
-        for(int j = 0; j < m; j++) {
-            // if(i != 0 && last == -1 && j == 0) start = 1;
-            // if(i != 0 && last == 1 && j == 0) start = -1;
-            start = -last;
-
-            // start(0)랑 같은 건 인덱스 상 짝수번째
-            // 다른건 인덱스 상 홀수 번째
-            if(j % 2 == 0 && chess[i][j] != start) cnt++;
-            if(j % 2 == 1 && chess[i][j] == start) cnt++;
+    for(int i = 0; i + 8 <= n; i++) {
+        for(int j = 0; j + 8 <= m; j++) {
+            temp = min(w_cnt(i, j), b_cnt(i, j));
+            if(ans > temp) ans = temp;
         }
     }
 
-    //if(m % 2 != 0) cnt -= m;
-
-    cout << cnt;
-
-    return 0;
+    cout << ans;
 }
