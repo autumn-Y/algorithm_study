@@ -1,24 +1,26 @@
-// https://www.acmicpc.net/problem/17136
-// set을 써서 중복 제거하고 모든 경우의 수 중 최솟값 구할 수 있다
+// https://www.acmicpc.net/problem/17136r
 
 #include <iostream>
-#include <set>
 #include <algorithm>
 using namespace std;
 
 int board[10][10];
 int papers[6] = {0, 5, 5, 5, 5, 5};
-set<int> result;
+int result = 10000;
 
 int find_max(int x, int y) {
     // 한번에 정사각형 모양으로 가능한질 봐야하니까
     // 우선 영역을 넘어가면 안되니까 늘어날 수 있는 범위부터 정하자
     int max_len = min(10 - x, 10 - y);
+    max_len = min(max_len, 5);
     
-    for(int i = 1; i <= max_len; i++) {
-        for(int a = x; a < x + i; a++) {
-            for(int b = y; b < y + i; b++) {
-                if(board[a][b] == 0) return i - 1;
+    // (x, y)엔 이미 1 x 1 색종이를 붙일 수 있으니까
+    // i는 양옆으로 다음 칸의 거리를 의미
+    // 즉, i = 1일 때는 2x2의 경우를 탐색하는 것
+    for(int i = 1; i < max_len; i++) {
+        for(int a = x; a <= x + i; a++) {
+            for(int b = y; b <= y + i; b++) {
+                if(board[a][b] == 0) return i;
             }
         }
     }
@@ -42,11 +44,28 @@ void uncover(int x, int y, int l) {
     }
 }
 
-int search(int cnt) {
+bool left_paper() {
+    for(int i = 0; i < 10; i++) {
+        for(int j = 0; j < 10; j++) {
+            if(board[i][j] == 1) return false;
+        }
+    }
+
+    return true;
+}
+
+void search(int cnt) {
     // 종료 조건은 색종이를 더이상 붙일 수 없으면
     // 재귀함수를 돌릴 때 사용한 색종이의 개수를 인수로 넣어야 트랙킹이 가능
-    // 근데 재귀 돌때마다 0부터 계속 돌면 손해
-    // 인수에 현재 좌표도 같이 넣어줘야겠다
+    
+    // 종료 조건 1. 더 이상 붙일 색종이가 없다
+    if(left_paper()) {
+        if(cnt < result) result = cnt;
+        return;
+    }
+
+    // 종료 조건 2. 애초에 이미 최솟값이 아닌 경우이다
+    if(cnt > result) return;
 
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 10; j++) {
@@ -64,23 +83,22 @@ int search(int cnt) {
                         papers[k]--;
 
                         // 다음 1 찾아가기
-                        result.insert(search(cnt + 1));
+                        search(cnt + 1);
 
                         // 돌아오면 복원
                         uncover(i, j, k);
                         papers[k]++;
                     }
-
-                    // 더이상 붙일 색종이가 없으면
-                    else return -1;
                 }
+
+                return;
             }
         }
     }
     
     // 어쨌든 간에 재귀를 다 돌아서 빠져나온다고 가정했을 때
     // 그 경우는 색종이를 다 붙인 경우이다
-    return cnt;
+    return;
 }
 
 int main() {
@@ -105,9 +123,7 @@ int main() {
     
     search(0);
 
-    // -1 제거
-    result.erase(-1);
+    if(result == 10000) result = -1;
 
-    // 최솟값 프린트
-    cout << *result.begin();
+    cout << result;
 }
